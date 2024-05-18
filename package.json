@@ -1,0 +1,16 @@
+{
+  "name": "fullstack-userauth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "client:dev": "cd client && pnpm install && pnpm dev",
+    "server:dev": "cd server && pnpm install && pnpm dev",
+    "client:build": "cd client && pnpm install && pnpm lint:fix && pnpm build",
+    "server:build": "cd server && pnpm install && pnpm lint:fix && pnpm build",
+    "build": "pnpm client:build && pnpm server:build"
+  },
+  "author": "Diwash Bhattarai",
+  "keywords": [],
+  "license": "ISC"
+}
