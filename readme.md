@@ -4,44 +4,6 @@
 
 FullStack User Authentication with MERN
 
-### Project Structure
-
-#### Front-End
-
-```sh
-  /public
-  /src
-    /assets
-    main.tsx
-    index.css
-    App.tsx
-    ...
-  .eslintrc.cjs
-  index.html
-  package.json
-  ...
-```
-
-#### Back-End: Node.js
-
-```sh
-  /public
-  /src
-    /controllers
-    /routes
-    /types
-    /utils
-    index.ts
-    app.ts
-    ...
-  .eslintrc
-  .prettierrc.json
-  nodemon.json
-  package.json
-  tsconfig.json
-  ...
-```
-
 ### Running Locally
 
 1. Clone the repository:
@@ -65,7 +27,11 @@ cd client
 pnpm install
 ```
 
-3. Run `pnpm start` to start the development server.
+3. Run `pnpm dev` to start the development server.
+
+```sh
+pnpm dev
+```
 
 4. Open [http://localhost:5173](http://localhost:5173) in your browser
 
@@ -87,11 +53,11 @@ pnpm install
 
 ```sh
 # if running dev server
-npm run dev
+pnpm dev
 
 # if running prod server
-npm run build
-npm run start
+pnpm build
+pnpm start
 ```
 
 ## License
