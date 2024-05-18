@@ -73,7 +73,7 @@ const Navbar = () => {
                   </Link>
 
                   {/* Github Icon */}
-                  <Link to="https://github.com/diwashbhattarai999/NextStarter" target="_blank">
+                  <Link to="https://github.com/diwashbhattarai999/FullStack-UserAuth" target="_blank">
                     <Button variant={'ghost'} size={'icon'} aria-label="Github">
                       <img src="/images/github.svg" alt="GitHub" />
                     </Button>

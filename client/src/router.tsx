@@ -9,6 +9,7 @@ import {
   ContactPage,
   BlogPage,
   AboutPage,
+  NotFoundPage,
 } from '@/pages';
 import { RootLayout, AuthLayout, Layout } from '@/layout';
 
@@ -28,6 +29,7 @@ const router = createBrowserRouter(
         <Route path="new-password" element={<NewPasswordPage />} />
         <Route path="new-verification" element={<NewVerificationPage />} />
       </Route>
+      <Route path="*" element={<NotFoundPage />} />
     </Route>
   )
 );

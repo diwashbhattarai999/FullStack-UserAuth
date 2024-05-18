@@ -9,6 +9,8 @@ import ResetPage from './auth/Reset';
 import NewPasswordPage from './auth/NewPassword';
 import NewVerificationPage from './auth/NewVerification';
 
+import NotFoundPage from './NotFound';
+
 export {
   HomePage,
   AboutPage,
@@ -19,4 +21,5 @@ export {
   ResetPage,
   NewPasswordPage,
   NewVerificationPage,
+  NotFoundPage,
 };
