@@ -5,6 +5,7 @@ import { db } from '../models/db';
 
 import { getVerificationTokenByEmail } from '../data/verification-token';
 import { getTwoFactorTokenByEmail } from '../data/two-factor-token';
+import { getPasswordResetTokenByEmail } from '../data/password-token';
 
 // Function to generate a verification token
 export const generateVerificationToken = async (email: string) => {
@@ -66,4 +67,35 @@ export const generateTwoFactorToken = async (email: string) => {
   });
 
   return twoFactorToken;
+};
+
+// Function to generate a password reset token
+export const generatePasswordResetToken = async (email: string) => {
+  // Generate a unique token using UUIDv4
+  const token = ulid();
+
+  // Set the expiration time to 1 hour from the current time
+  const expires = new Date(new Date().getTime() + 60 * 60 * 1000);
+
+  const existingToken = await getPasswordResetTokenByEmail(email);
+
+  // If an existing token is found, delete it
+  if (existingToken) {
+    await db.passwordResetToken.delete({
+      where: {
+        id: existingToken.id,
+      },
+    });
+  }
+
+  // Create a new password reset token in the database
+  const passwordResetToken = await db.passwordResetToken.create({
+    data: {
+      email,
+      token,
+      expires,
+    },
+  });
+
+  return passwordResetToken;
 };

@@ -42,3 +42,24 @@ export const sendTwoFactorTokenEmail = async (email: string, token: string) => {
    `,
   });
 };
+
+// Function to send password reset email
+export const sendPasswordResetEmail = async (email: string, token: string) => {
+  const resetLink = `${domain}/new-password?token=${token}`;
+
+  await resend.emails.send({
+    from: 'FullStack UserAuth<diwash@diwashb.com.np>',
+    to: email,
+    subject: 'Reset your password',
+    html: `
+      <h1>Password Reset</h1>
+      <p>We received a request to reset your password.</p>
+      <p>If you didn't request a password reset, you can ignore this email.</p>
+      <p>To reset your password, please click the link below:</p>
+      <a href="${resetLink}">Reset Password</a>
+      <p>If the button above doesn't work, you can copy and paste the following link into your browser:</p>
+      <p>${resetLink}</p>
+      <p>This link will expire in 24 hours for security reasons.</p>
+  `,
+  });
+};

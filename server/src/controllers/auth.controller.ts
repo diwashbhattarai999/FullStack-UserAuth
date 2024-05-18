@@ -1,21 +1,22 @@
 import { NextFunction, Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { UserRole } from '@prisma/client';
 
 import catchAsync from '../errors/catchAsync';
 import CustomError from '../errors/customError';
 
 import env from '../utils/validateEnv';
-import { generateTwoFactorToken, generateVerificationToken } from '../utils/token';
-import { sendTwoFactorTokenEmail, sendVerificationEmail } from '../utils/mail';
+import { generatePasswordResetToken, generateTwoFactorToken, generateVerificationToken } from '../utils/token';
+import { sendPasswordResetEmail, sendTwoFactorTokenEmail, sendVerificationEmail } from '../utils/mail';
 
 import { getUserByEmail } from '../data/user';
 import { getTwoFactorTokenByEmail } from '../data/two-factor-token';
+import { getPasswordResetTokenByToken } from '../data/password-token';
 import { getVerificationTokenByToken } from '../data/verification-token';
 import { getTwoFactorConfirmationByUserId } from '../data/two-factor-confirmation';
 
 import { db } from '../models/db';
-import { UserRole } from '@prisma/client';
 
 const authController = {
   signup: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -208,6 +209,60 @@ const authController = {
           user: sanitizedUser,
         },
       });
+  }),
+
+  reset: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const { email } = req.body;
+
+    // Check if user with given email exists
+    const existingUser = await getUserByEmail(email);
+    if (!existingUser) {
+      return next(new CustomError('Email does not exist!', 400));
+    }
+
+    // Generate and send password reset email
+    const passwordResetToken = await generatePasswordResetToken(email);
+    await sendPasswordResetEmail(passwordResetToken.email, passwordResetToken.token);
+
+    res.status(200).json({ success: true, message: 'Reset email sent!' });
+  }),
+
+  newPassword: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const { token, password } = req.body;
+
+    if (!token) {
+      return next(new CustomError('Missing token!', 400));
+    }
+
+    // Retrieve password reset token and return error if token is invalid
+    const existingToken = await getPasswordResetTokenByToken(token);
+    if (!existingToken) {
+      return next(new CustomError('Invalid token!', 400));
+    }
+
+    // Check if token has expired and return error if token has expired
+    const hasExpired = new Date(existingToken.expires) < new Date();
+    if (hasExpired) return next(new CustomError('Token has expired!', 400));
+
+    // Retrieve user by email from the token and return error if email does not exist
+    const existingUser = await getUserByEmail(existingToken.email);
+    if (!existingUser) return next(new CustomError('Email does not exist!', 400));
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Update user's password in the database
+    await db.user.update({
+      where: { id: existingUser.id },
+      data: { password: hashedPassword },
+    });
+
+    // Delete the used password reset token
+    await db.passwordResetToken.delete({
+      where: { id: existingToken.id },
+    });
+
+    res.status(201).json({ success: true, message: 'Password updated successfully!' });
   }),
 };
 
