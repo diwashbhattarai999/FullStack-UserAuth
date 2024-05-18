@@ -1,11 +1,16 @@
-import express from 'express';
+import 'dotenv/config';
+import cors from 'cors';
+import app from './app';
+import env from './utils/validateEnv';
 
-const app = express();
-const PORT = 8000;
+const PORT = env.PORT || 8000;
 
-app.get('/', (_, res) => {
-  res.send('Hello, world!');
-});
+app.use(
+  cors({
+    origin: env.CLIENT_URL,
+    credentials: true,
+  })
+);
 
 app.listen(PORT, () => {
   console.log(`\nctrl + click http://localhost:${PORT}\nctrl + c to stop server`);
