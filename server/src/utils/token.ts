@@ -1,7 +1,10 @@
+import crypto from 'crypto';
 import { ulid } from 'ulidx';
 
-import { getVerificationTokenByEmail } from '../data/verification-token';
 import { db } from '../models/db';
+
+import { getVerificationTokenByEmail } from '../data/verification-token';
+import { getTwoFactorTokenByEmail } from '../data/two-factor-token';
 
 // Function to generate a verification token
 export const generateVerificationToken = async (email: string) => {
@@ -32,4 +35,35 @@ export const generateVerificationToken = async (email: string) => {
   });
 
   return verificationToken;
+};
+
+// Function to generate a two-factor authentication token
+export const generateTwoFactorToken = async (email: string) => {
+  // Generate a random six-digit token
+  const token = crypto.randomInt(100_000, 1_000_000).toString();
+
+  // Set the expiration time to 5 minutes from the current time
+  const expires = new Date(new Date().getTime() + 5 * 60 * 1000);
+
+  const existingToken = await getTwoFactorTokenByEmail(email);
+
+  // If an existing token is found, delete it
+  if (existingToken) {
+    await db.twoFactorToken.delete({
+      where: {
+        id: existingToken.id,
+      },
+    });
+  }
+
+  // Create a new two-factor authentication token in the database
+  const twoFactorToken = await db.twoFactorToken.create({
+    data: {
+      email,
+      token,
+      expires,
+    },
+  });
+
+  return twoFactorToken;
 };
