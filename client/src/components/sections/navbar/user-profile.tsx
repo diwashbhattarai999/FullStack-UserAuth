@@ -2,16 +2,19 @@
 
 import { useState } from 'react';
 import { LogOut, LucideIcon, UserCircle2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
+import { RootState } from '@/redux/store';
 
 import { cn } from '@/lib/utils';
-import { Link } from 'react-router-dom';
 
 const UserProfile = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const handleLogout = async () => {};
 
-  const user: { image?: string; email?: string } | null = {};
+  const user = useSelector((state: RootState) => state.user.currentUser);
 
   const MENU_ITEMS: {
     label: string;

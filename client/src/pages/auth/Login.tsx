@@ -13,6 +13,8 @@ import FormSuccess from '@/components/common/form-success';
 import Input from '@/components/ui/Input';
 import CardWrapper from '@/components/common/card-wrapper';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setUser } from '@/redux/features/userSlice';
 
 const defaultValues = {
   email: '',
@@ -25,6 +27,7 @@ const LoginPage = () => {
   const [success, setSuccess] = useState<string | undefined>('');
   const [isPending, setIsPending] = useState(false);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const {
@@ -56,9 +59,10 @@ const LoginPage = () => {
         )
         .then((res) => {
           if (res.data.success) {
-            // console.log(res.data);
-            navigate('/');
+            console.log(res.data.data.user);
+            dispatch(setUser(res.data.data.user));
             reset();
+            navigate('/');
           }
           if (res.data.twoFactor) {
             setShowTwoFactor(true);

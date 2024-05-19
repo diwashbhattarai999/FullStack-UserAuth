@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
+import { RootState } from '@/redux/store';
 import { NAV_LINKS } from '@/constants';
-
 import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button/Button';
@@ -16,7 +17,7 @@ const Navbar = () => {
   const pathname = location.pathname.split('/')[1];
   const [activeLink, setActiveLink] = useState(`/${pathname}`);
 
-  const user = null;
+  const user = useSelector((state: RootState) => state.user.currentUser);
 
   return (
     <div className="py-3 sm:py-5 border-b border-border/50">
