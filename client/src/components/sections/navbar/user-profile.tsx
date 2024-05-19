@@ -34,7 +34,7 @@ const UserProfile = () => {
       onClick: () => {
         setIsProfileOpen(false);
       },
-      link: '/settings',
+      link: '/settings/general',
     },
   ];
 
