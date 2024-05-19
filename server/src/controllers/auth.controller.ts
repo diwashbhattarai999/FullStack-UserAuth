@@ -201,6 +201,7 @@ const authController = {
       .cookie(env.COOKIES_NAME, JSON.stringify({ token }), {
         path: '/',
         secure: false,
+        httpOnly: true,
         maxAge: 5 * 24 * 60 * 60 * 1000, // 5 day
       })
       .json({

@@ -16,6 +16,7 @@ app.use(
     origin: env.CLIENT_URL,
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    exposedHeaders: ['Set-Cookie'],
   })
 );
 
