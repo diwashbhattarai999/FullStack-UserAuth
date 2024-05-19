@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useTransition } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -23,7 +21,7 @@ const DeleteAccountButton = () => {
   };
 
   const handleDeleteAccount = () => {
-    //TODO: handle deletion
+    // TODO: handle deletion
   };
 
   return (

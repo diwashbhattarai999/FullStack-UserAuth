@@ -3,6 +3,7 @@ import authController from '../controllers/auth.controller';
 
 const router = express.Router();
 
+// public routes
 router.post('/signup', authController.signup);
 router.post('/new-verification', authController.newVerification);
 router.post('/signin', authController.signin);

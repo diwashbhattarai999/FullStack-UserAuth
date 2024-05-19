@@ -1,5 +1,3 @@
-'use client';
-
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
@@ -63,7 +61,6 @@ const NewVerificationPage = () => {
       wrapperClassName="min-h-fit"
     >
       <div className="flex items-center justify-center w-full">
-        {/* //TODO: Add a loader here */}
         {!success && !error && <h2>Loading...</h2>}
         <FormSuccess message={success} />
         {!success && <FormError message={error} />}

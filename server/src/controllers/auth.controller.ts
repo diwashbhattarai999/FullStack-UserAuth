@@ -19,6 +19,7 @@ import { getTwoFactorConfirmationByUserId } from '../data/two-factor-confirmatio
 import { db } from '../models/db';
 
 const authController = {
+  /*  **********Signup********** */
   signup: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { email, password, name } = req.body;
 
@@ -60,6 +61,7 @@ const authController = {
     res.status(201).json({ success: true, message: 'Confirmation email sent!' });
   }),
 
+  /*  **********New Verification********** */
   newVerification: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { token } = req.body;
 
@@ -100,6 +102,7 @@ const authController = {
     res.status(200).json({ success: true, message: 'Email verified!' });
   }),
 
+  /*  **********Signin********** */
   signin: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { email, password, code } = req.body;
 
@@ -217,6 +220,7 @@ const authController = {
       });
   }),
 
+  /*  **********Password Reset********** */
   reset: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { email } = req.body;
 
@@ -233,6 +237,7 @@ const authController = {
     res.status(200).json({ success: true, message: 'Reset email sent!' });
   }),
 
+  /*  **********Change New Password********** */
   newPassword: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { token, password } = req.body;
 
