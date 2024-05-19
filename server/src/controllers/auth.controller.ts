@@ -114,7 +114,7 @@ const authController = {
     // Check if user with given email exists and return error if email does not exist
     const existingUser = await getUserByEmail(email);
     if (!existingUser || !existingUser.email || !existingUser.password) {
-      return next(new CustomError('Invalid credentials', 400));
+      return next(res.status(401).json({ success: false, message: 'Invalid credentials!' }));
     }
 
     // Send verification email if user's email is not verified
@@ -185,13 +185,7 @@ const authController = {
     }
 
     // Sign in the user with credentials
-    const token = jwt.sign(
-      { id: existingUser.id, email: existingUser.email, role: existingUser.role },
-      env.JWT_SECRET,
-      {
-        expiresIn: env.JWT_EXPIRES_IN,
-      }
-    );
+    const token = jwt.sign({ id: existingUser.id, email: existingUser.email, role: existingUser.role }, env.JWT_SECRET);
 
     //sanitize the required value only
     const sanitizedUser = {
@@ -203,11 +197,10 @@ const authController = {
     };
 
     res
-      .status(201)
-      .cookie(env.COOKIES_NAME, JSON.stringify({ token, user: sanitizedUser }), {
+      .status(200)
+      .cookie(env.COOKIES_NAME, JSON.stringify({ token }), {
         path: '/',
         secure: false,
-        httpOnly: true,
         maxAge: 5 * 24 * 60 * 60 * 1000, // 5 day
       })
       .json({

@@ -1,4 +1,4 @@
-import { Bell, Brush, Mail, MapPin, Phone, Trash, User, Users } from 'lucide-react';
+import { Mail, MapPin, Phone, Trash, User } from 'lucide-react';
 
 // Navigation links for the header
 export const NAV_LINKS = [
@@ -67,21 +67,6 @@ export const SETTINGS_OPTIONS = [
     icon: User,
     label: 'General',
     link: 'general',
-  },
-  {
-    icon: Brush,
-    label: 'Appearance',
-    link: 'appearance',
-  },
-  {
-    icon: Users,
-    label: 'Social Profiles',
-    link: 'social-profiles',
-  },
-  {
-    icon: Bell,
-    label: 'Notifications',
-    link: 'notifications',
   },
   {
     icon: Trash,

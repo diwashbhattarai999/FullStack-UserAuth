@@ -1,9 +1,12 @@
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { KeyRound, Mail, Phone, UserCircle2, UserCog2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { RootState } from '@/redux/store';
 import { SettingsProfileSchema } from '@/schemas';
 
 import { Button } from '@/components/ui/button/Button';
@@ -13,14 +16,15 @@ import Input from '@/components/ui/Input';
 import Select from '@/components/ui/select';
 import Switch from '@/components/ui/switch';
 import ChangeProfileImg from '@/components/sections/settings/change-profile';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { setUser } from '@/redux/features/userSlice';
 
 const SettingsForm = () => {
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
   const [selectValue, setSelectValue] = useState('Select a Role');
+
+  const dispatch = useDispatch();
 
   const user = useSelector((state: RootState) => state.user.currentUser);
 
@@ -51,7 +55,34 @@ const SettingsForm = () => {
   });
 
   const onSubmit = (values: z.infer<typeof SettingsProfileSchema>) => {
-    console.log(values);
+    setError('');
+    setSuccess('');
+    setIsPending(true);
+
+    const { email, password, role, isTwoFactorEnabled, name, newPassword, phone } = values;
+
+    (async () => {
+      await axios
+        .put(
+          `${import.meta.env.VITE_SERVER_BASE_URL}api/profile/update`,
+          { email, password, phone, role, name, isTwoFactorEnabled, newPassword },
+          {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          if (res.data.success) {
+            setSuccess(res.data.message);
+            dispatch(setUser(res.data.data.user));
+          }
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+          setError(err.response.data.message);
+        })
+        .finally(() => setIsPending(false));
+    })();
   };
 
   return (
@@ -79,7 +110,7 @@ const SettingsForm = () => {
             placeholder="name@example.com"
             icon={Mail}
             error={errors.email?.message}
-            disabled={isPending}
+            disabled={true}
             register={register('email')}
           />
 

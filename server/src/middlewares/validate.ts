@@ -10,9 +10,10 @@ import { db } from '../models/db';
 const validate = {
   cookie: asyncCatch(async (req: Request, res: Response, next: NextFunction) => {
     const cookie = req.cookies[env.COOKIES_NAME];
-    if (!cookie) return next();
+    if (!cookie) return next(res.status(401).json({ success: false, message: 'Unauthorized User!' }));
 
     const { token } = JSON.parse(cookie);
+
     const user = jwt.verify(token, env.JWT_SECRET);
     req.user = user;
     next();

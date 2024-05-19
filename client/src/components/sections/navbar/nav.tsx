@@ -53,9 +53,9 @@ const Navbar = () => {
             {user ? (
               <>
                 {/* Dashboard */}
-                <Link to={'/dashboard'}>
+                <Link to={'/settings/general'}>
                   <Button variant={'default'} className="rounded-full hover:rounded-md font-semibold text-base">
-                    Dashboard
+                    Settings
                   </Button>
                 </Link>
 

@@ -59,11 +59,10 @@ const LoginPage = () => {
         )
         .then((res) => {
           if (res.data.success) {
-            console.log(res.data);
             if (res.data.verified) {
               dispatch(setUser(res.data.data.user));
               reset();
-              navigate('/');
+              navigate('/settings/general');
             } else {
               setSuccess(res.data.message);
             }

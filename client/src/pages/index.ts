@@ -4,9 +4,6 @@ import BlogPage from './Blog';
 import ContactPage from './Contact';
 
 import SettingsPage from './settings/Settings';
-import AppearancePage from './settings/Appearance';
-import SocialProfilePage from './settings/SocialProfile';
-import NotificationsPage from './settings/Notifications';
 import DeleteAccountPage from './settings/DeleteAccount';
 
 import LoginPage from './auth/Login';
@@ -23,9 +20,6 @@ export {
   BlogPage,
   ContactPage,
   SettingsPage,
-  AppearancePage,
-  SocialProfilePage,
-  NotificationsPage,
   DeleteAccountPage,
   LoginPage,
   RegisterPage,

@@ -11,9 +11,6 @@ import {
   AboutPage,
   NotFoundPage,
   SettingsPage,
-  AppearancePage,
-  SocialProfilePage,
-  NotificationsPage,
   DeleteAccountPage,
 } from '@/pages';
 import { RootLayout, AuthLayout, Layout, SettingsLayout } from '@/layout';
@@ -33,9 +30,6 @@ const router = createBrowserRouter(
       <Route path="/settings" element={<SettingsLayout />}>
         <Route path="" element={<SettingsPage />} />
         <Route path="general" element={<SettingsPage />} />
-        <Route path="appearance" element={<AppearancePage />} />
-        <Route path="social-profiles" element={<SocialProfilePage />} />
-        <Route path="notifications" element={<NotificationsPage />} />
         <Route path="delete-account" element={<DeleteAccountPage />} />
       </Route>
 

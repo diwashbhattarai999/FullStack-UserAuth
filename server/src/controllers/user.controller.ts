@@ -57,7 +57,18 @@ const userController = {
       },
     });
 
-    res.status(200).json({ success: true, message: 'Settings Updated!', data: { user: updatedUser } });
+    //sanitize the required value only
+    const sanitizedUser = {
+      id: updatedUser.id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      image: updatedUser.image,
+      phone: updatedUser.phone,
+      role: updatedUser.role,
+      isTwoFactorEnabled: updatedUser.isTwoFactorEnabled,
+    };
+
+    res.status(200).json({ success: true, message: 'Settings Updated!', data: { user: sanitizedUser } });
   }),
 
   /*  **********Delete user profile********** */
@@ -69,6 +80,22 @@ const userController = {
     // Delete user from database
     await db.user.delete({
       where: { id: req.user.id },
+    });
+
+    res.status(200).json({ success: true, message: 'Your account has been deleted.' });
+  }),
+
+  /*  **********Delete user profile********** */
+  deleteProfileById: asyncCatch(async (req: Request, res: Response) => {
+    if (!req.user) {
+      throw new CustomError(`User not found!`, 404);
+    }
+
+    const { id } = req.body;
+
+    // Delete user from database
+    await db.user.delete({
+      where: { id },
     });
 
     res.status(200).json({ success: true, message: 'Your account has been deleted.' });

@@ -1,7 +1,9 @@
-import { useState, useTransition } from 'react';
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
 
-import { RootState } from '@/redux/store';
+import { removeUser } from '@/redux/features/userSlice';
 
 import { Button } from '@/components/ui/button/Button';
 import ConfirmationPopup from '@/components/ui/confirmation-popup';
@@ -12,22 +14,42 @@ const DeleteAccountButton = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
 
-  const user = useSelector((state: RootState) => state.user.currentUser);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleConfirmation = () => {
     setShowConfirmation(true);
   };
 
   const handleDeleteAccount = () => {
-    // TODO: handle deletion
+    setError('');
+    setSuccess('');
+    setIsPending(true);
+
+    (async () => {
+      await axios
+        .delete(`${import.meta.env.VITE_SERVER_BASE_URL}api/profile/delete`, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          if (res.data.success) {
+            dispatch(removeUser());
+            navigate('/login');
+          }
+        })
+        .catch((err) => {
+          console.log(err.response);
+          setError(err.response.data.message);
+        })
+        .finally(() => setIsPending(false));
+    })();
   };
 
   return (
     <>
       {/* Delete confirmation */}
-
       <ConfirmationPopup
         heading="Delete your account"
         showConfirmation={showConfirmation}
