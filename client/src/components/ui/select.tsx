@@ -1,10 +1,8 @@
-"use client";
+import React, { useState } from 'react';
+import { ChevronDown, LucideIcon } from 'lucide-react';
+import { UseFormRegisterReturn } from 'react-hook-form';
 
-import React, { useState } from "react";
-import { ChevronDown, LucideIcon } from "lucide-react";
-import { UseFormRegisterReturn } from "react-hook-form";
-
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 export type Options = {
   readonly value: string;
@@ -15,14 +13,14 @@ interface SelectProps {
   name: string;
   register: UseFormRegisterReturn;
   value: string;
-  setSelectValue: React.Dispatch<React.SetStateAction<any>>;
+  setSelectValue: React.Dispatch<React.SetStateAction<any>>; //eslint-disable-line
   error?: string;
   disabled?: boolean;
   options: Options[];
   className?: string;
   selectLabel: string;
   Icon?: LucideIcon;
-  onChange?: (value: string) => void; // eslint-disable-line no-unused-vars
+  onChange?: (value: string) => void;
 }
 
 const Select = ({
@@ -51,37 +49,30 @@ const Select = ({
 
   return (
     <div
-      className={cn("w-full relative mb-8 flex flex-col items-start gap-2 ", {
-        "cursor-not-allowed opacity-50": disabled,
+      className={cn('w-full relative mb-8 flex flex-col items-start gap-2 ', {
+        'cursor-not-allowed opacity-50': disabled,
       })}
     >
       <label
         htmlFor="SelectRole"
         className={cn(
-          "text-primary cursor-pointer ",
-          { "text-destructive opacity-80": error },
-          { "cursor-not-allowed opacity-50": disabled }
+          'text-primary cursor-pointer ',
+          { 'text-destructive opacity-80': error },
+          { 'cursor-not-allowed opacity-50': disabled }
         )}
       >
         {selectLabel}
       </label>
 
-      <div
-        className="flex items-center w-full"
-        onClick={() => setSelectOpen((currValue) => !currValue)}
-      >
-        {Icon && (
-          <Icon className="absolute left-2 pointer-events-none h-5 w-5 text-secondary-foreground" />
-        )}
+      <div className="flex items-center w-full" onClick={() => setSelectOpen((currValue) => !currValue)}>
+        {Icon && <Icon className="absolute left-2 pointer-events-none h-5 w-5 text-secondary-foreground" />}
 
         <div
           {...props}
           className={cn(
-            "w-full h-full bg-transparent border rounded-md text-left text-primary placeholder:text-secondary-foreground outline-none disabled:cursor-not-allowed disabled:opacity-50 appearance-none cursor-pointer",
-            error
-              ? "border-destructive focus:border-destructive"
-              : "border-input focus:border-secondary-foreground",
-            Icon ? "py-4 px-10" : "py-2 px-4",
+            'w-full h-full bg-transparent border rounded-md text-left text-primary placeholder:text-secondary-foreground outline-none disabled:cursor-not-allowed disabled:opacity-50 appearance-none cursor-pointer',
+            error ? 'border-destructive focus:border-destructive' : 'border-input focus:border-secondary-foreground',
+            Icon ? 'py-4 px-10' : 'py-2 px-4',
             className
           )}
           {...register}
@@ -90,8 +81,8 @@ const Select = ({
         </div>
         <ChevronDown
           className={cn(
-            "absolute right-2 cursor-pointer h-9 w-9 text-secondary-foreground",
-            Icon ? "pr-4 h-9 w-9" : "h-6 w-6"
+            'absolute right-2 cursor-pointer h-9 w-9 text-secondary-foreground',
+            Icon ? 'pr-4 h-9 w-9' : 'h-6 w-6'
           )}
         />
       </div>
@@ -99,10 +90,10 @@ const Select = ({
 
       <div
         className={cn(
-          "w-full h-fit bg-background border border-border shadow-md absolute left-0 top-[5.7rem] py-2 rounded-md text-left duration-300 z-50 overflow-y-auto max-h-60",
+          'w-full h-fit bg-background border border-border shadow-md absolute left-0 top-[5.7rem] py-2 rounded-md text-left duration-300 z-50 overflow-y-auto max-h-60',
           selectOpen
-            ? "translate-y-0 opacity-100 h-auto pointer-events-auto"
-            : "-translate-y-5 opacity-0 -h-4 pointer-events-none"
+            ? 'translate-y-0 opacity-100 h-auto pointer-events-auto'
+            : '-translate-y-5 opacity-0 -h-4 pointer-events-none'
         )}
       >
         {options.map((option) => (

@@ -7,7 +7,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "baseUrl": "src/",
-    "typeRoots": ["./node_module/@types", "./src/types"],
+    "typeRoots": ["./node_module/@types", "./src/types/express"],
     "resolveJsonModule": true,
     "outDir": "./dist",
     "removeComments": true,
