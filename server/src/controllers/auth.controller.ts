@@ -203,7 +203,7 @@ const authController = {
         secure: true,
         httpOnly: true,
         maxAge: 5 * 24 * 60 * 60 * 1000, // 5 day
-        sameSite: 'lax',
+        sameSite: 'none',
       })
       .json({
         success: true,
