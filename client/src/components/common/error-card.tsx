@@ -1,6 +1,10 @@
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
+import { removeUser } from '@/redux/features/userSlice';
+
 import { Button } from '@/components/ui/button/Button';
 import MaxWidthContainer from './max-width-container';
-import { Link } from 'react-router-dom';
 
 interface ErrorCardProps {
   backButtonLabel: string;
@@ -10,11 +14,17 @@ interface ErrorCardProps {
 }
 
 const ErrorCard = ({ backButtonHref, backButtonLabel, logout, children }: ErrorCardProps) => {
-  const handleLogout = () => {};
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    dispatch(removeUser());
+    navigate('/login', { replace: true });
+  };
 
   return (
     <MaxWidthContainer>
-      <section className="flex h-[calc(100vh_-_90px)] w-full flex-col items-center justify-center gap-4 text-center">
+      <section className="flex min-h-[70vh] w-full flex-col items-center justify-center gap-4 text-center">
         <h2 className="text-4xl">Oops! Something went wrong!</h2>
 
         <p>Could not find requested resource</p>

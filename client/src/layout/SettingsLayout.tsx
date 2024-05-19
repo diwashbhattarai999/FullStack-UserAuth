@@ -23,6 +23,7 @@ const SettingsLayout = () => {
   if (!user) {
     return null;
   }
+
   return (
     <div className="flex flex-col min-h-screen w-full">
       <Navbar />
