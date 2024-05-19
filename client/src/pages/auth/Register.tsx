@@ -1,8 +1,9 @@
-import { useState, useTransition } from 'react';
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { KeyRound, Mail, UserCircle } from 'lucide-react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as z from 'zod';
+import axios from 'axios';
 
 import { RegisterSchema } from '@/schemas';
 
@@ -22,7 +23,7 @@ const defaultValues = {
 const RegisterPage = () => {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
 
   const {
     register: reg,
@@ -37,8 +38,37 @@ const RegisterPage = () => {
   const onSubmit: SubmitHandler<typeof defaultValues> = (values: z.infer<typeof RegisterSchema>) => {
     setError('');
     setSuccess('');
+    setIsPending(true);
 
-    console.log(values);
+    const { email, password, confirmPassword, name } = values;
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      setIsPending(false);
+      return;
+    }
+
+    (async () => {
+      await axios
+        .post(
+          `${import.meta.env.VITE_SERVER_BASE_URL}api/auth/signup`,
+          { email, password, name },
+          {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          if (res.data.success) {
+            setSuccess(res.data.message);
+            reset();
+          }
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+          setError(err.response.data.message);
+        })
+        .finally(() => setIsPending(false));
+    })();
   };
 
   return (

@@ -20,10 +20,10 @@ import { db } from '../models/db';
 
 const authController = {
   signup: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const { email, password, name, phone } = req.body;
+    const { email, password, name } = req.body;
 
     // check for missing fields
-    if (!email || !password || !name || !phone) {
+    if (!email || !password || !name) {
       throw new CustomError('missing required fields', 400);
     }
 
@@ -124,13 +124,13 @@ const authController = {
         return next(new CustomError('Error sending verification email', 500));
       }
 
-      return next(res.status(201).json({ success: true, message: 'Confirmation email sent!' }));
+      return next(res.status(201).json({ success: true, message: 'Confirmation email sent!', verified: false }));
     }
 
     // Check if password matches and return error if password does not match
     const passwordMatch = await bcrypt.compare(password, existingUser.password);
     if (!passwordMatch) {
-      return next(res.status(401).json({ success: false, message: 'Invalid Credentials!' }));
+      return next(res.status(401).json({ success: false, message: 'Invalid Credentials!', verified: true }));
     }
 
     // Handle two-factor authentication
@@ -139,7 +139,7 @@ const authController = {
         // Validate two-factor authentication code
         const twoFactorToken = await getTwoFactorTokenByEmail(existingUser.email);
         if (!twoFactorToken || twoFactorToken.token !== code) {
-          return next(res.status(401).json({ success: false, message: 'Invalid code!' }));
+          return next(res.status(401).json({ success: false, message: 'Invalid code!', verified: true }));
         }
 
         // Check if two-factor authentication code has expired
@@ -174,7 +174,9 @@ const authController = {
         await sendTwoFactorTokenEmail(twoFactorToken.email, twoFactorToken.token);
 
         return next(
-          res.status(200).json({ success: true, message: 'Token sent to email successfully', twoFactor: true })
+          res
+            .status(200)
+            .json({ success: true, message: 'Token sent to email successfully', twoFactor: true, verified: true })
         );
       }
     }
@@ -211,6 +213,7 @@ const authController = {
         data: {
           user: sanitizedUser,
         },
+        verified: true,
       });
   }),
 

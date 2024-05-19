@@ -59,10 +59,14 @@ const LoginPage = () => {
         )
         .then((res) => {
           if (res.data.success) {
-            console.log(res.data.data.user);
-            dispatch(setUser(res.data.data.user));
-            reset();
-            navigate('/');
+            console.log(res.data);
+            if (res.data.verified) {
+              dispatch(setUser(res.data.data.user));
+              reset();
+              navigate('/');
+            } else {
+              setSuccess(res.data.message);
+            }
           }
           if (res.data.twoFactor) {
             setShowTwoFactor(true);

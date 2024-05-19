@@ -1,11 +1,12 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import axios from 'axios';
 
 import FormError from '@/components/common/form-error';
 import FormSuccess from '@/components/common/form-success';
 import CardWrapper from '@/components/common/card-wrapper';
-import { useSearchParams } from 'react-router-dom';
 
 const NewVerificationPage = () => {
   const [error, setError] = useState<string | undefined>();
@@ -13,6 +14,8 @@ const NewVerificationPage = () => {
 
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
+
+  const navigate = useNavigate();
 
   const onSubmit = useCallback(() => {
     if (success || error) return;
@@ -22,8 +25,30 @@ const NewVerificationPage = () => {
       return;
     }
 
-    console.log(token);
-  }, [token, success, error]);
+    (async () => {
+      await axios
+        .post(
+          `${import.meta.env.VITE_SERVER_BASE_URL}api/auth/new-verification`,
+          { token },
+          {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          if (res.data.success) {
+            setSuccess(res.data.message);
+            setTimeout(() => {
+              navigate('/login');
+            }, 2000);
+          }
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+          setError(err.response.data.message);
+        });
+    })();
+  }, [token, success, error, navigate]);
 
   useEffect(() => {
     onSubmit();
