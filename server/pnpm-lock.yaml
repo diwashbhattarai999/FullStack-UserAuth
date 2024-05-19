@@ -35,6 +35,9 @@ importers:
       resend:
         specifier: ^3.2.0
         version: 3.2.0
+      typescript:
+        specifier: ^5.4.5
+        version: 5.4.5
       ulidx:
         specifier: ^2.3.0
         version: 2.3.0
@@ -87,9 +90,6 @@ importers:
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.12.12)(typescript@5.4.5)
-      typescript:
-        specifier: ^5.4.5
-        version: 5.4.5
 
 packages:
 
