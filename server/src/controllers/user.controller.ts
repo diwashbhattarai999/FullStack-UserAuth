@@ -105,12 +105,16 @@ const userController = {
   getUsers: asyncCatch(async (req: Request, res: Response) => {
     const users = await db.user.findMany({
       select: {
+        id: true,
         email: true,
         name: true,
         image: true,
         isTwoFactorEnabled: true,
         phone: true,
         role: true,
+        createdAt: true,
+        updatedAt: true,
+        emailVerified: true,
       },
     });
 
