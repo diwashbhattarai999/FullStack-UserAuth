@@ -17,10 +17,14 @@ export const userSlice = createSlice({
     setUser: (state, action) => {
       state.currentUser = action.payload;
     },
+    removeUser: (state) => {
+      state.currentUser = null;
+      document.cookie = 'fullStackAuth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setUser } = userSlice.actions;
+export const { setUser, removeUser } = userSlice.actions;
 
 export default userSlice.reducer;

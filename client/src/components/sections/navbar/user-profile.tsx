@@ -2,17 +2,23 @@
 
 import { useState } from 'react';
 import { LogOut, LucideIcon, UserCircle2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '@/redux/store';
 
 import { cn } from '@/lib/utils';
+import { removeUser } from '@/redux/features/userSlice';
 
 const UserProfile = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleLogout = async () => {};
+  const handleLogout = async () => {
+    dispatch(removeUser());
+    navigate('/login', { replace: true });
+  };
 
   const user = useSelector((state: RootState) => state.user.currentUser);
 
