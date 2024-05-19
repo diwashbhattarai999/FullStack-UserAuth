@@ -24,7 +24,7 @@ const authController = {
 
     // check for missing fields
     if (!email || !password || !name) {
-      throw new CustomError('missing required fields', 400);
+      throw new CustomError('Missing required fields', 400);
     }
 
     // Hash the password

@@ -1,10 +1,9 @@
-'use client';
-
-import { useState, useTransition } from 'react';
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Mail } from 'lucide-react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as z from 'zod';
+import axios from 'axios';
 
 import { ResetSchema } from '@/schemas';
 
@@ -21,7 +20,7 @@ const defaultValues = {
 const ResetPage = () => {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
 
   const {
     register,
@@ -35,8 +34,31 @@ const ResetPage = () => {
   const onSubmit: SubmitHandler<typeof defaultValues> = (values: z.infer<typeof ResetSchema>) => {
     setError('');
     setSuccess('');
+    setIsPending(true);
 
-    console.log(values);
+    const { email } = values;
+
+    (async () => {
+      await axios
+        .post(
+          `${import.meta.env.VITE_SERVER_BASE_URL}api/auth/reset`,
+          { email },
+          {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          if (res.data.success) {
+            setSuccess(res.data.message);
+          }
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+          setError(err.response.data.message);
+        })
+        .finally(() => setIsPending(false));
+    })();
   };
 
   return (
