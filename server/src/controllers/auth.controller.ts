@@ -173,7 +173,9 @@ const authController = {
         const twoFactorToken = await generateTwoFactorToken(existingUser.email);
         await sendTwoFactorTokenEmail(twoFactorToken.email, twoFactorToken.token);
 
-        return next(res.status(200).json({ success: true, message: 'Token sent to email successfully' }));
+        return next(
+          res.status(200).json({ success: true, message: 'Token sent to email successfully', twoFactor: true })
+        );
       }
     }
 
@@ -199,8 +201,9 @@ const authController = {
       .status(201)
       .cookie(env.COOKIES_NAME, JSON.stringify({ token, user: sanitizedUser }), {
         path: '/',
-        maxAge: 3600,
+        secure: false,
         httpOnly: true,
+        maxAge: 5 * 24 * 60 * 60 * 1000, // 5 day
       })
       .json({
         success: true,
