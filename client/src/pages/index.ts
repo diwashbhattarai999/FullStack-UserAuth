@@ -2,6 +2,7 @@ import HomePage from './Home';
 import AboutPage from './About';
 import BlogPage from './Blog';
 import ContactPage from './Contact';
+import DashboardPage from './Dashboard';
 
 import SettingsPage from './settings/Settings';
 import DeleteAccountPage from './settings/DeleteAccount';
@@ -19,6 +20,7 @@ export {
   AboutPage,
   BlogPage,
   ContactPage,
+  DashboardPage,
   SettingsPage,
   DeleteAccountPage,
   LoginPage,

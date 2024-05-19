@@ -49,11 +49,18 @@ const Navbar = () => {
             })}
           </div>
 
-          <div className="max-sm:hidden ml-8 flex items-center gap-2 lg:gap-4">
+          <div className="ml-8 flex items-center gap-2 lg:gap-4">
+            {user && user.role === 'ADMIN' && (
+              <Link to={'/dashboard'} className="max-sm:hidden block">
+                <Button variant={'default'} className="rounded-full hover:rounded-md font-semibold text-base">
+                  Dashboard
+                </Button>
+              </Link>
+            )}
             {user ? (
               <>
                 {/* Dashboard */}
-                <Link to={'/settings/general'}>
+                <Link to={'/settings/general'} className="max-sm:hidden block">
                   <Button variant={'default'} className="rounded-full hover:rounded-md font-semibold text-base">
                     Settings
                   </Button>
@@ -65,7 +72,7 @@ const Navbar = () => {
             ) : (
               <>
                 {/* Show if user is not logged in */}
-                <div className="ml-5 xl:ml-20 flex items-center gap-2 lg:gap-4">
+                <div className="ml-5 xl:ml-20 flex items-center gap-2 lg:gap-4 max-sm:hidden">
                   {/* Signin button */}
                   <Link to={'/login'}>
                     <Button variant={'default'} className="rounded-full px-12 hover:rounded-md font-semibold text-base">

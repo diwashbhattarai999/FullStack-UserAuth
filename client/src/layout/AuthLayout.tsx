@@ -1,7 +1,25 @@
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Outlet, useNavigate } from 'react-router-dom';
+
+import { RootState } from '@/redux/store';
+
 import Logo from '@/components/common/logo';
-import { Outlet } from 'react-router-dom';
 
 const AuthLayout = () => {
+  const user = useSelector((state: RootState) => state.user.currentUser);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate('/', { replace: true });
+    }
+  }, [user, navigate]);
+
+  if (user) {
+    return null;
+  }
+
   return (
     <main className="flex flex-col items-center justify-center min-h-screen w-full bg-primary/5 relative">
       <div className="flex flex-col items-center justify-between gap-8 max-w-[28rem] w-full h-full my-5">

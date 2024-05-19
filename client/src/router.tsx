@@ -12,6 +12,7 @@ import {
   NotFoundPage,
   SettingsPage,
   DeleteAccountPage,
+  DashboardPage,
 } from '@/pages';
 import { RootLayout, AuthLayout, Layout, SettingsLayout } from '@/layout';
 
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
         <Route path="about" element={<AboutPage />} />
         <Route path="blog" element={<BlogPage />} />
         <Route path="contact" element={<ContactPage />} />
+        <Route path="dashboard" element={<DashboardPage />} />
       </Route>
 
       {/* Settings */}

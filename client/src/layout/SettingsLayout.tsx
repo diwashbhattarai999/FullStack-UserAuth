@@ -1,5 +1,6 @@
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import { RootState } from '@/redux/store';
 
@@ -9,7 +10,19 @@ import Navbar from '@/components/sections/navbar/nav';
 import Footer from '@/components/sections/footer/footer';
 
 const SettingsLayout = () => {
+  const navigate = useNavigate();
+
   const user = useSelector((state: RootState) => state.user.currentUser);
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login', { replace: true });
+    }
+  }, [user, navigate]);
+
+  if (!user) {
+    return null;
+  }
   return (
     <div className="flex flex-col min-h-screen w-full">
       <Navbar />
